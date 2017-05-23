@@ -1,0 +1,10 @@
+---
+
+- name: pooka
+  user: root
+  hosts:
+    - pooka
+  roles:
+    - onionoo
+  vars:
+    onionoo_version: 4.0-1.2.0

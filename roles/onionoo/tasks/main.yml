@@ -1,0 +1,42 @@
+---
+- name: install jre
+  apt:
+    package: default-jre
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+  tags:
+    - apt
+    - onionoo
+
+- name: make onionoo directory
+  file:
+    dest: /srv/onionoo
+    state: directory
+  tags:
+    - onionoo
+
+- name: make onionoo user
+  user:
+    name: onionoo
+    shell: /bin/false
+    system: yes
+    home: /srv/onionoo/
+  tags:
+    - onionoo
+
+- name: fetch oniono release 
+  get_url:
+    sha256sum: ba4701d6aaa725d8592ecf9008fbfb7e9a4223b71190c42e000b66795d76d6ce
+    url: "https://dist.torproject.org/onionoo/{{ onionoo_version }}/onionoo-{{ onionoo_version }}.tar.gz"
+    dest: "/srv/onionoo/{{ onionoo_version }}"
+    mode: 0755
+  tags:
+    - onionoo
+
+- name: extract onionoo release
+  unarchive:
+    src: "/srv/onionoo/onionoo-{{ onionoo_version }}.tar.gz"
+    dest: /srv/onionoo/
+    owner: onionoo
+    group: onionoo
